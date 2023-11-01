@@ -31,57 +31,60 @@ const displayAllDogs = (puppyArray, isFilterOnOff = false) => {
 
     const dogBar = document.querySelector('#dog-bar')
 
-    const goodDogsArray = puppyArray.filter((puppy) => {
-        if (puppy.isGoodDog) return puppy
-    })
-
     dogBar.innerHTML = ''
 
     if (isFilterOnOff) {
-        displayPupDetails(goodDogsArray,0)
+        const goodDogsArray = puppyArray.filter((puppy) => {
+            if (puppy.isGoodDog) return puppy
+        })
+
+        //Need to fix
+        displayPupDetails(goodDogsArray[0])
         for (let j in goodDogsArray) {
             const dogButton = document.createElement('span')
             dogButton.innerHTML = goodDogsArray[j].name
             dogButton.addEventListener('click', (event) => {
-                displayPupDetails(goodDogsArray,j)
+                displayPupDetails(goodDogsArray[j])
             })
             dogBar.appendChild(dogButton)
         }
     } else {
-        displayPupDetails(puppyArray,0)
+        displayPupDetails(puppyArray[0])
         for (let i in puppyArray) {
             const dogButton = document.createElement('span')
             dogButton.innerHTML = puppyArray[i].name
             dogButton.addEventListener('click', (event) => {
-                displayPupDetails(puppyArray,i)
+                displayPupDetails(puppyArray[i])
             })
             dogBar.appendChild(dogButton)
         }
     }
 }
 
-const displayPupDetails = (puppyArray,dogID) => {
-    const isGoodDog = puppyArray[dogID].isGoodDog
+const displayPupDetails = (dog) => {
+    const isGoodDog = dog.isGoodDog
     const dogInfo = document.querySelector('#dog-info')
-    const a = document.createElement('h2'),
-        b = document.createElement('img'),
-        c = document.createElement('button')
+    const dogName = document.createElement('h2'),
+            dogImage = document.createElement('img'),
+        goodBadButton = document.createElement('button')
 
     dogInfo.innerHTML = ''
-    a.innerHTML = puppyArray[dogID].name
-    b.src = puppyArray[dogID].image
-    b.style.width = '300px'
-    c.id = 'goodBadButton'
+    dogName.innerHTML = dog.name
+    dogImage.src = dog.image
+    dogImage.style.width = '300px'
+    goodBadButton.id = 'goodBadButton'
+    // c.dataset.idName = dog.id
+    // console.log(c.dataset)
     isGoodDog ? (c.innerHTML = 'Good Dog!') : (c.innerHTML = 'Bad Dog!')
 
-    dogInfo.appendChild(b)
-    dogInfo.appendChild(a)
+    dogInfo.appendChild(dogImage)
+    dogInfo.appendChild(dogName)
     dogInfo.appendChild(c)
 
     c.addEventListener('click',()=>{
-        puppyArray[dogID].isGoodDog ? (puppyArray[dogID].isGoodDog = false) : (puppyArray[dogID].isGoodDog = true)   
-        updateText(puppyArray[dogID])
-        puppyArray[dogID].isGoodDog ? (c.innerHTML = 'Good Dog!') : (c.innerHTML = 'Bad Dog!')                    
+        dog.isGoodDog ? (dog.isGoodDog = false) : (dog.isGoodDog = true)   
+        updateText(dog)
+        dog.isGoodDog ? (c.innerHTML = 'Good Dog!') : (c.innerHTML = 'Bad Dog!')                    
     })
 }
 
